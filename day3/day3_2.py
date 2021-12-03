@@ -1,11 +1,10 @@
 from numpy import array
+from itertools import takewhile, count
 
 
 def reduce(v, f):
-    i = 0
-    while len(v) > 1:
+    for i in takewhile(lambda _: len(v) > 1, count()):
         v = v[v[:, i] == f(v[:, i], key=lambda c: ((v[:, i] == c).sum(), c))]
-        i += 1
     return int(''.join(v[0]), 2)
 
 
