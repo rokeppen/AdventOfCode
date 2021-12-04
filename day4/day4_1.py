@@ -20,12 +20,12 @@ def get_bingo_card(card, numbers):
                 index = line.index(number)
                 line[index] = ''
                 if not any(line) or not any(x[index] for x in card):
-                    return i, number, sum(int(x) for y in card for x in filter(lambda j: j, y))
+                    return i, number, sum(int(x) for y in card for x in filter(None, y))
 
 
 def get_bingo(f):
     numbers, cards = read_file(open("input.txt"))
-    card = f((get_bingo_card(card, numbers) for card in cards), key=lambda x: x[0])
+    card = f(get_bingo_card(card, numbers) for card in cards)
     return int(card[1]) * card[2]
 
 
