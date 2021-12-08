@@ -15,8 +15,7 @@ def get_count(file):
     for line in file:
         numbers, output = line.split('|')[0].strip().split(' '), line.split('|')[1].strip().split(' ')
         for per in permutations("abcdefg"):
-            translation = [decode(n, per) for n in numbers]
-            if sorted(translation) == keys:
+            if sorted(decode(n, per) for n in numbers) == keys:
                 result += int(''.join(str(table.get(decode(n, per))) for n in output))
                 break
     return result
