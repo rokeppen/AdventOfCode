@@ -11,12 +11,11 @@ def decode(x, key):
 
 def get_count(file):
     table = {"abcdef": 0, "bc": 1, "abdeg": 2, "abcdg": 3, "bcfg": 4, "acdfg": 5, "acdefg": 6, "abc": 7, "abcdefg": 8, "abcdfg": 9}
-    result, keys = 0, sorted(list(table.keys()))
+    result, keys = 0, sorted(table.keys())
     for line in file:
-        numbers, output = line.split('|')[0].strip().split(' '), line.split('|')[1].strip().split(' ')
         for per in permutations("abcdefg"):
-            if sorted(decode(n, per) for n in numbers) == keys:
-                result += int(''.join(str(table.get(decode(n, per))) for n in output))
+            if sorted(decode(n, per) for n in line.split('|')[0].split()) == keys:
+                result += int(''.join(str(table.get(decode(n, per))) for n in line.split('|')[1].split()))
                 break
     return result
 
