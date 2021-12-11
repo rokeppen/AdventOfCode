@@ -2,8 +2,7 @@ import numpy as np
 
 
 def get_low_points(grid):
-    return [(i, j) for i in range(len(grid)) for j in range(len(grid[i])) if
-            all(grid[i, j] < grid[i + dx, j + dy] for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)])]
+    return [(i, j) for i in range(len(grid)) for j in range(len(grid[i])) if all(grid[i, j] < grid[i + dx, j + dy] for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)])]
 
 
 def get_risk(file):
@@ -11,13 +10,9 @@ def get_risk(file):
     return sum(grid[i, j] + 1 for i, j in get_low_points(grid))
 
 
-def increase(m, to_look):
-    new = to_look.copy()
-    for x, y in to_look:
-        for xd, yd in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            if m[x + xd, y + yd] != 9:
-                new.add((x + xd, y + yd))
-    return new if len(new) == len(to_look) else increase(m, new)
+def increase(m, prev):
+    new = prev.union((x + xd, y + yd) for x, y in prev for xd, yd in [(-1, 0), (1, 0), (0, -1), (0, 1)] if m[x + xd, y + yd] != 9)
+    return new if len(new) == len(prev) else increase(m, new)
 
 
 def get_basin(file):

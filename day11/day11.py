@@ -1,6 +1,5 @@
 import numpy as np
 from itertools import product, count
-from math import inf
 
 
 def increase(m, to_look):
@@ -14,7 +13,7 @@ def increase(m, to_look):
 
 
 def get_flashes(file):
-    grid = np.pad(np.genfromtxt(file, delimiter=1), 1, 'constant', constant_values=-inf)
+    grid = np.pad(np.genfromtxt(file, delimiter=1), 1, 'constant', constant_values=-np.inf)
     result = 0
     for _ in range(100):
         grid = increase(grid + 1, zip(np.where(grid == 9)[0], np.where(grid == 9)[1]))
@@ -24,7 +23,7 @@ def get_flashes(file):
 
 
 def get_sync(file):
-    grid = np.pad(np.genfromtxt(file, delimiter=1), 1, 'constant', constant_values=-inf)
+    grid = np.pad(np.genfromtxt(file, delimiter=1), 1, 'constant', constant_values=-np.inf)
     for i in count():
         grid = increase(grid + 1, zip(np.where(grid == 9)[0], np.where(grid == 9)[1]))
         grid[grid > 9] = 0
