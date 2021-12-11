@@ -31,3 +31,4 @@ def get_bingo(f):
 
 if __name__ == '__main__':
     print(get_bingo(min))
+    print(get_bingo(max))

@@ -2,7 +2,7 @@ from itertools import permutations
 
 
 def get_simple_count(file):
-    return sum(1 for line in file for x in line.split('|')[1].strip().split(' ') if 1 < len(x) < 5 or len(x) == 7)
+    return sum(1 for line in file for x in line.split('|')[1].split() if 1 < len(x) < 5 or len(x) == 7)
 
 
 def decode(x, key):
