@@ -1,8 +1,6 @@
 from itertools import count
-from numpy import prod
-
-
-ops = {0: sum, 1: prod, 2: min, 3: max, 5: lambda x: int(x[0] > x[1]), 6: lambda x: int(x[0] < x[1]), 7: lambda x: int(x[0] == x[1])}
+from functools import reduce
+from operator import add, mul, gt, lt, eq
 
 
 def read_subs(binary):
@@ -27,31 +25,19 @@ def read_subs(binary):
     return (version, type_id, expr), binary
 
 
-def parse(string, rec):
+def parse(file, rec):
+    string = open(file).read().strip()
     return rec(read_subs(bin(int(string, 16))[2:].zfill(len(string) * 4))[0])
 
 
-def sum_versions(expr):
-    return expr[0] if expr[1] == 4 else expr[0] + sum(map(sum_versions, expr[2]))
+def sum_versions(exp):
+    return exp[0] if exp[1] == 4 else exp[0] + sum(map(sum_versions, exp[2]))
 
 
-def evaluate(expr):
-    return expr[2] if expr[1] == 4 else ops[expr[1]](list(map(evaluate, expr[2])))
+def evaluate(exp):
+    return exp[2] if exp[1] == 4 else reduce([add, mul, min, max, 0, gt, lt, eq][exp[1]], list(map(evaluate, exp[2])))
 
 
 if __name__ == '__main__':
-    data = open("input.txt").read().strip()
-    print(parse("8A004A801A8002F478", sum_versions))
-    print(parse("620080001611562C8802118E34", sum_versions))
-    print(parse("C0015000016115A2E0802F182340", sum_versions))
-    print(parse("A0016C880162017C3686B18A3D4780", sum_versions))
-    print(parse(data, sum_versions))
-    print(parse("C200B40A82", evaluate))
-    print(parse("04005AC33890", evaluate))
-    print(parse("880086C3E88112", evaluate))
-    print(parse("CE00C43D881120", evaluate))
-    print(parse("D8005AC2A8F0", evaluate))
-    print(parse("F600BC2D8F", evaluate))
-    print(parse("9C005AC2F8F0", evaluate))
-    print(parse("9C0141080250320F1802104A08", evaluate))
-    print(parse(data, evaluate))
+    print(parse("input.txt", sum_versions))
+    print(parse("input.txt", evaluate))
